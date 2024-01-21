@@ -1,0 +1,24 @@
+version: '3.1'
+services:
+  prometheus:
+    build: .
+    container_name: prometheus
+    restart: always
+    command: 
+      - "--web.config.file=/etc/prometheus/web-config.yml"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+      - "--web.external-url=https://localhost:9090/prometheus"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=15d"
+      - "--storage.tsdb.retention.size=1GB"
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--config.file.template=/etc/prometheus/prometheus.yml.template"
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./certs:/etc/prometheus/certs
+      - ./config:/etc/prometheus
+      - prometheus:/prometheus
+volumes:
+  prometheus:

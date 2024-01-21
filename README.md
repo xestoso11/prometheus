@@ -5,26 +5,16 @@ Esta imagen permite usar variables de entorno de docker en el archivo prometheus
 
 # Cómo usar imagen prometheus
 
-Para cargar la imagen y poder empezar a usarla se necesita descargar el prometheus.tar y cargarlo con los siguiente comandos dependiendo del sistema operativo que se use.
-<br>
+Para cargar la imagen y poder empezar a usarla se necesita descargar el la imagen de https://hub.docker.com/r/xestoso11/prometheus
 
-Windows
-```
-docker load -i < .\prometheus.tar
-```
-Linux
-```
-docker load < .\prometheus.tar
-```
-<br>
 
 ## Nombre de imagen
-Para poder usar esta imagen hay que indicar en apartado de imagen que use: prometheus-prometheus:latest . No puede haber de antes otra imagen de docker que tenga este mismo nombre.
+Para poder usar esta imagen hay que indicar en apartado de imagen que use: docker xestoso11/prometheus:latest . No puede haber de antes otra imagen de docker que tenga este mismo nombre.
 
 ```
 services:
   prometheus:
-    image: prometheus-prometheus:latest
+    image: xestoso11/prometheus:latest
 ```
 
 
@@ -45,7 +35,7 @@ Se pueden usar exactamente los mismos argumentos que se pueden usar con una imag
 ```
 services:
   prometheus:
-    image: prometheus-prometheus:latest
+    image: xestoso11/prometheus:latest
     command:
       - "--config.file.template=/etc/prometheus/prometheus.yml.template"
     volumes:
@@ -62,7 +52,7 @@ Se indican todas las variables de entorno en el archivo de docker de la siguient
 ```
 services:
   prometheus:
-    image: prometheus-prometheus:latest
+    image: xestoso11/prometheus:latest
     command:
       - "--config.file.template=/etc/prometheus/prometheus.yml.template"
     environment:
@@ -102,3 +92,8 @@ Para crear esta imagen se creó el Dockerfile con todas las modificaciones neces
 # Imagen base 
 La imagen base que se usó para generar esta fue
 bitnami/prometheus:2.46.0-debian-11-r31
+<br>
+https://hub.docker.com/r/bitnami/prometheus
+<br>
+https://github.com/bitnami/containers
+
