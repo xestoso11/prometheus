@@ -1,0 +1,110 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+  - scheme: https
+    basic_auth:
+      username: admin
+      password: admin
+    tls_config:
+      insecure_skip_verify: true
+    path_prefix: alertmanager
+    static_configs:
+    - targets: 
+      - '${url_alertmanager_alerts}'
+
+rule_files:
+  - "${url_rule_mysql}"
+## Prometheus
+scrape_configs:
+  - job_name: 'prometheus'
+    scheme: https
+    basic_auth:
+      username: admin
+      password: admin
+    tls_config:
+      insecure_skip_verify: true
+    metrics_path: 'prometheus/metrics'
+    static_configs:
+      - targets: ["${url_prometheus}:9090"]
+        labels:
+          servidor: xestoso11
+          filtro: prometheus-filter
+## Grafana
+  - job_name: "grafana"
+    scheme: https
+    basic_auth:
+      username: admin
+      password: admin
+    tls_config:
+      insecure_skip_verify: true
+    metrics_path: 'grafana/metrics'
+    static_configs:
+      - targets: ["${url_grafana}:3000"]
+
+## Mysql-Exporter
+  - job_name: 'mysql-exporter'
+    scheme: https
+    basic_auth:
+      username: admin
+      password: admin
+    tls_config:
+      insecure_skip_verify: true
+    metrics_path: 'metrics'
+    static_configs:
+      - targets: ["${url_mysql}:9104"]
+        labels:
+          servidor: xestoso11
+          filtro: bbdd_mysql
+## Mongodb-Exporter
+  - job_name: "mongodb-exporter"
+    static_configs:
+      - targets: ["${url_mongodb}:9216"]
+## Apache-Exporter
+  - job_name: 'apache-exporter'
+    scheme: https
+    basic_auth:
+      username: admin
+      password: admin
+    tls_config:
+      insecure_skip_verify: true
+    metrics_path: 'metrics'
+    static_configs:
+      - targets: ["${url_apache}:9117"]
+        labels:
+          servidor: xestoso11
+          filtro: servidor_web_apache
+## Blackbox-Exporter
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params: 
+      module: [http_2xx]
+    static_configs:
+      - targets: 
+        - ${url_github}
+        labels:
+          servidor: xestoso11
+          filtro: docker_metrics
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox:9115
+## Alertmanager
+  - job_name: 'alertmanager'
+    scheme: https
+    basic_auth:
+      username: admin
+      password: admin
+    tls_config:
+      insecure_skip_verify: true
+    metrics_path: 'alertmanager/metrics'
+    static_configs:
+      - targets: ["${url_alertmanager}:9093"]
+        labels:
+          servidor: xestoso11
+          filtro: alerts
