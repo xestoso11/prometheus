@@ -1,0 +1,5 @@
+tls_server_config:
+  cert_file: ./certs/xestoso11.crt
+  key_file: ./certs/xestoso11.key
+basic_auth_users:
+  admin: $2a$12$sj9hDn4yuW63XXMKtHlyXeFiwXAOAlqUU02P6hXM9lrFVS7Wo5Cke
